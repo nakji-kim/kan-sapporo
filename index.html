@@ -88,6 +88,18 @@ ol.tl::before{content:"";position:absolute;left:7px;top:10px;bottom:10px;width:2
 .maps .maplink{margin-top:0}
 .maplink{display:inline-flex;align-items:center;gap:4px;margin-top:8px;font-size:13px;font-weight:700;color:var(--sea);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:3px 10px}
 
+/* options */
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px}
+.opt{font:inherit;font-size:13.5px;font-weight:700;text-align:left;padding:8px 10px;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer;line-height:1.35}
+.opt small{display:block;font-weight:400;color:var(--muted);font-size:12px;margin-top:2px}
+.opt[aria-pressed="true"]{border-color:var(--sea-2);background:var(--info);color:var(--info-ink)}
+.opt[aria-pressed="true"] small{color:inherit;opacity:.8}
+.optbody h5{margin:12px 0 4px;font-size:13px}
+.optbody ul{margin:0;padding-left:18px;font-size:14px}
+.optbody li{margin:3px 0}
+.optbody .pro{color:var(--sea-2)}
+.optbody .con{color:var(--todo)}
+
 /* stays + passes */
 h3.sec{font-family:"Gowun Batang",serif;font-size:19px;margin:22px 0 10px}
 h3.sec:first-child{margin-top:4px}
@@ -246,6 +258,26 @@ footer a{color:var(--muted)}
     daysEl.appendChild(b);
   });
 
+  function optionsHtml(opts, key){
+    let sel = 0;
+    try{ const v = localStorage.getItem("kansap-opt-" + key); if (v !== null && opts[+v]) sel = +v; }catch(e){}
+    let h = '<div class="optwrap" data-key="' + key + '"><div class="opts">';
+    opts.forEach((o, n) => {
+      h += '<button class="opt" data-n="' + n + '" aria-pressed="' + (n === sel) + '">' + esc(o.name) +
+        (o.sub ? "<small>" + esc(o.sub) + "</small>" : "") + "</button>";
+    });
+    h += "</div>";
+    opts.forEach((o, n) => {
+      h += '<div class="optbody"' + (n === sel ? "" : " hidden") + ">";
+      if (o.info) h += '<p class="info">' + esc(o.info) + "</p>";
+      if (o.pros) h += '<h5 class="pro">👍 좋은 점</h5><ul>' + o.pros.map(x => "<li>" + esc(x) + "</li>").join("") + "</ul>";
+      if (o.cons) h += '<h5 class="con">👀 아쉬운 점</h5><ul>' + o.cons.map(x => "<li>" + esc(x) + "</li>").join("") + "</ul>";
+      if (o.map) h += mapLinks(o.map);
+      h += "</div>";
+    });
+    return h + "</div>";
+  }
+
   function showDay(i){
     [...daysEl.children].forEach((c, j) => c.setAttribute("aria-pressed", i === j));
     daysEl.children[i].scrollIntoView({block: "nearest", inline: "center"});
@@ -255,17 +287,28 @@ footer a{color:var(--muted)}
     if (d.pass) h += '<span class="tag">' + esc(d.pass) + "</span>";
     if (d.stay) h += '<span class="tag stay">🛏 ' + esc(d.stay) + "</span>";
     h += '</div></div><ol class="tl">';
-    d.items.forEach(it => {
+    d.items.forEach((it, k) => {
       h += '<li class="ev' + (it.time ? " timed" : "") + '"><div class="card">';
       if (it.time) h += '<div class="time">' + esc(it.time) + "</div>";
       h += '<div class="ttl">' + esc(it.title) + (it.todo ? '<span class="badge">미정</span>' : "") + "</div>";
       if (it.note) h += '<p class="note">' + esc(it.note) + "</p>";
       if (it.info) h += '<p class="info">' + esc(it.info) + "</p>";
       if (it.map) h += mapLinks(it.map);
+      if (it.options) h += optionsHtml(it.options, i + "-" + k);
       h += "</div></li>";
     });
     h += "</ol>";
     $("#day").innerHTML = h;
+    $("#day").querySelectorAll(".optwrap").forEach(w => {
+      const key = "kansap-opt-" + w.dataset.key;
+      w.addEventListener("click", e => {
+        const b = e.target.closest(".opt"); if (!b) return;
+        const n = +b.dataset.n;
+        w.querySelectorAll(".opt").forEach((x, j) => x.setAttribute("aria-pressed", j === n));
+        w.querySelectorAll(".optbody").forEach((x, j) => x.hidden = j !== n);
+        try{ localStorage.setItem(key, n); }catch(err){}
+      });
+    });
     try{ sessionStorage.setItem("day", i); }catch(e){}
   }
 
