@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kan 패밀리 삿포로</title>
+<meta name="description" content="2026.12.7–11 삿포로·오타루 가족여행 일정">
+<meta name="theme-color" content="#1f4e5f">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f1e9; --card:#fffdf9; --ink:#22303a; --muted:#6b7680; --line:#e6ddcf;
+  --sea:#1f4e5f; --sea-2:#2f7184; --sun:#e0763c; --sun-soft:#fbe6d8;
+  --info:#eef5f6; --info-ink:#245565; --todo:#c2410c; --todo-bg:#fff1e6;
+  --shadow:0 1px 2px rgba(34,48,58,.06),0 4px 14px rgba(34,48,58,.06);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#12181c; --card:#1b2328; --ink:#e8ecef; --muted:#9aa6ae; --line:#2c373e;
+    --sea:#8cc7d6; --sea-2:#6fb3c4; --sun:#f0935f; --sun-soft:#3a2a20;
+    --info:#1d2f35; --info-ink:#a9d6e1; --todo:#f5a06b; --todo-bg:#3a271b;
+    --shadow:none;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#12181c; --card:#1b2328; --ink:#e8ecef; --muted:#9aa6ae; --line:#2c373e;
+  --sea:#8cc7d6; --sea-2:#6fb3c4; --sun:#f0935f; --sun-soft:#3a2a20;
+  --info:#1d2f35; --info-ink:#a9d6e1; --todo:#f5a06b; --todo-bg:#3a271b;
+  --shadow:none;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 "Noto Sans KR",system-ui,sans-serif}
+a{color:inherit}
+.wrap{max-width:640px;margin:0 auto;padding:0 16px}
+
+/* header */
+header{background:linear-gradient(160deg,#1f4e5f 0%,#2f7184 70%,#3d8796 100%);color:#fff;padding:28px 0 22px;position:relative;overflow:hidden}
+header::after{content:"";position:absolute;right:-40px;top:-40px;width:180px;height:180px;border-radius:50%;background:#e0763c;opacity:.9}
+header::before{content:"";position:absolute;left:0;right:0;bottom:0;height:26px;background:
+  radial-gradient(28px 12px at 28px 26px,var(--bg) 98%,transparent) repeat-x;background-size:56px 26px}
+header .wrap{position:relative;z-index:1}
+.eyebrow{font-size:12px;letter-spacing:.12em;opacity:.85;margin:0}
+h1{font-family:"Gowun Batang",serif;font-size:28px;line-height:1.25;margin:6px 0 10px;word-break:keep-all}
+.meta{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13.5px;opacity:.95;margin-bottom:18px}
+.dday{display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:3px 12px;font-size:13px;font-weight:700}
+
+/* tabs */
+nav.tabs{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px solid var(--line)}
+nav.tabs .wrap{display:flex;gap:4px}
+nav.tabs button{flex:1;appearance:none;border:0;background:none;color:var(--muted);font:inherit;font-weight:700;padding:12px 2px;border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap;font-size:14.5px}
+nav.tabs button[aria-selected="true"]{color:var(--sea);border-bottom-color:var(--sun)}
+
+section[hidden]{display:none}
+.panel{padding:16px 0 40px}
+
+/* day chips */
+.days{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 10px;scrollbar-width:none;margin:0 -16px;padding-left:16px;padding-right:16px}
+.days::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;appearance:none;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:14px;padding:8px 14px;text-align:left;font:inherit;cursor:pointer;min-width:84px}
+.chip b{display:block;font-size:14px}
+.chip span{font-size:12px;color:var(--muted)}
+.chip[aria-pressed="true"]{background:var(--sea);border-color:var(--sea);color:var(--card)}
+.chip[aria-pressed="true"] span{color:inherit;opacity:.8}
+.dayhead{margin:10px 0 14px}
+.dayhead h2{font-family:"Gowun Batang",serif;font-size:22px;margin:0}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.tag{font-size:12px;border-radius:999px;padding:2px 10px;background:var(--sun-soft);color:var(--ink)}
+.tag.stay{background:var(--info);color:var(--info-ink)}
+
+/* timeline */
+ol.tl{list-style:none;margin:0;padding:0;position:relative}
+ol.tl::before{content:"";position:absolute;left:7px;top:10px;bottom:10px;width:2px;background:var(--line)}
+.ev{position:relative;padding-left:28px;margin-bottom:12px}
+.ev::before{content:"";position:absolute;left:1px;top:16px;width:10px;height:10px;border-radius:50%;background:var(--card);border:3px solid var(--sea-2)}
+.ev.timed::before{background:var(--sea-2)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;box-shadow:var(--shadow)}
+.time{font-size:12.5px;font-weight:700;color:var(--sun);letter-spacing:.02em}
+.ttl{font-weight:700;font-size:15.5px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.badge{font-size:11px;font-weight:700;color:var(--todo);background:var(--todo-bg);border-radius:6px;padding:1px 7px}
+.note{margin:6px 0 0;white-space:pre-line;color:var(--ink);font-size:14px}
+.note::before{content:"메모 · ";color:var(--muted);font-size:12px}
+.info{white-space:pre-line;margin:8px 0 0;background:var(--info);color:var(--info-ink);border-radius:10px;padding:8px 10px;font-size:13.5px}
+.info::before{content:"ℹ︎ ";font-weight:700}
+.maps{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.maps .maplink{margin-top:0}
+.maplink{display:inline-flex;align-items:center;gap:4px;margin-top:8px;font-size:13px;font-weight:700;color:var(--sea);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:3px 10px}
+
+/* stays + passes */
+h3.sec{font-family:"Gowun Batang",serif;font-size:19px;margin:22px 0 10px}
+h3.sec:first-child{margin-top:4px}
+.stack{display:grid;gap:10px}
+.stay h4,.pass h4{margin:0;font-size:16px}
+.small{font-size:13px;color:var(--muted)}
+.pass .price{font-weight:700;color:var(--sun);font-size:14px;margin:4px 0 6px}
+.pass ul{margin:6px 0 0;padding-left:18px;font-size:14px}
+.pass li{margin:3px 0}
+
+/* checklists */
+.checks{list-style:none;margin:0;padding:0}
+.checks li{border-bottom:1px solid var(--line)}
+.checks li:last-child{border-bottom:0}
+.checks label{display:flex;gap:10px;align-items:flex-start;padding:10px 2px;cursor:pointer}
+.checks input{width:20px;height:20px;margin:1px 0 0;accent-color:var(--sea-2);flex:0 0 auto}
+.checks input:checked + span{color:var(--muted);text-decoration:line-through}
+.progress{font-size:13px;color:var(--muted);margin:-4px 0 10px}
+.grp{font-weight:700;font-size:14px;color:var(--sea);margin:14px 0 2px}
+.reset{appearance:none;border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:999px;padding:5px 12px;font:inherit;font-size:12.5px;margin-top:12px;cursor:pointer}
+
+.wxday{display:flex;align-items:center;gap:12px}
+.wxicon{font-size:30px;line-height:1;width:40px;text-align:center;flex:0 0 auto}
+.wxmain{flex:1;min-width:0}
+.wxmain b{font-size:15px}
+.wxtemp{text-align:right;flex:0 0 auto}
+.wxtemp .hi{font-weight:700;color:var(--sun);font-size:17px}
+.wxtemp .lo{color:var(--sea-2);font-size:15px;margin-left:4px}
+.wxsub{font-size:12.5px;color:var(--muted)}
+.wxtip{margin-top:10px;background:var(--info);color:var(--info-ink);border-color:transparent;font-size:14px}
+.wxnorm{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.wxnorm .card{text-align:center}
+.wxnorm .big{font-size:20px;font-weight:700;margin:4px 0}
+.calc table{width:100%;border-collapse:collapse;font-size:14px;margin-top:6px}
+.calc td{padding:6px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.calc td.n{text-align:right;white-space:nowrap;padding-left:10px;font-variant-numeric:tabular-nums}
+.calc tr.grp td{font-weight:700;color:var(--sea);border-bottom:0;padding-top:12px}
+.calc tr.sum td{font-weight:700;border-bottom:0}
+.calc tr.pass td{color:var(--sun);font-weight:700;border-bottom:0}
+.save{margin-top:10px;background:var(--sun-soft);border-radius:10px;padding:10px 12px;font-size:14px}
+.save b{font-size:16px}
+.calc ul{margin:10px 0 0;padding-left:18px;font-size:13px;color:var(--muted)}
+footer{border-top:1px solid var(--line);padding:18px 0 40px;font-size:12.5px;color:var(--muted)}
+footer ul{padding-left:18px;margin:6px 0}
+footer a{color:var(--muted)}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <p class="eyebrow">SAPPORO · OTARU</p>
+    <h1 id="title"></h1>
+    <div class="meta"><span id="dates"></span></div>
+    <span class="dday" id="dday"></span>
+  </div>
+</header>
+
+<nav class="tabs" role="tablist">
+  <div class="wrap">
+    <button role="tab" data-tab="plan" aria-selected="true">일정</button>
+    <button role="tab" data-tab="move" aria-selected="false">숙소·교통</button>
+    <button role="tab" data-tab="pack" aria-selected="false">준비물</button>
+    <button role="tab" data-tab="wx" aria-selected="false">날씨</button>
+  </div>
+</nav>
+
+<main class="wrap">
+  <section id="plan" class="panel">
+    <div class="days" id="days"></div>
+    <div id="day"></div>
+  </section>
+
+  <section id="move" class="panel" hidden>
+    <h3 class="sec">숙소</h3>
+    <div class="stack" id="stays"></div>
+    <h3 class="sec">교통</h3>
+    <div class="stack" id="passes"></div>
+    <h3 class="sec">예약 · 할 일</h3>
+    <div class="card"><p class="progress" id="todoProg"></p><ul class="checks" id="todos"></ul></div>
+  </section>
+
+  <section id="pack" class="panel" hidden>
+    <h3 class="sec">준비물 체크리스트</h3>
+    <div class="card">
+      <p class="progress" id="packProg"></p>
+      <div id="packing"></div>
+    </div>
+    <p class="small">체크한 내용은 지금 보고 있는 폰에만 저장돼요.</p>
+    <button class="reset" id="reset">체크 모두 지우기</button>
+  </section>
+
+  <section id="wx" class="panel" hidden>
+    <h3 class="sec">여행 날씨</h3>
+    <p class="small" id="wxStatus" style="margin:-4px 0 10px"></p>
+    <div class="stack" id="wxDays"></div>
+    <div class="card wxtip" id="wxTip"></div>
+    <h3 class="sec">12월 평년 기온</h3>
+    <div class="wxnorm" id="wxNorm"></div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p style="margin:0">요금·운영시간은 2026년 11월에 찾아본 정보예요. 출발 전에 한 번 더 확인하세요.</p>
+    <ul id="sources"></ul>
+  </div>
+</footer>
+
+<script src="data.js"></script>
+<script>
+(function(){
+  const T = window.TRIP;
+  const $ = s => document.querySelector(s);
+  const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const mapLinks = m => {
+    const list = Array.isArray(m) ? m : [["지도", m]];
+    return '<div class="maps">' + list.map(x => {
+      const [label, q] = Array.isArray(x) ? x : [x, x];
+      return '<a class="maplink" target="_blank" rel="noopener" href="' + mapUrl(q) + '">📍 ' + esc(label) + '</a>';
+    }).join("") + '</div>';
+  };
+  const mapUrl = q => "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(q);
+  const store = {
+    get(k){ try{ return JSON.parse(localStorage.getItem(k)) || {}; }catch(e){ return {}; } },
+    set(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+  };
+
+  $("#title").textContent = T.title;
+  $("#dates").textContent = T.dates;
+
+  // D-day
+  const today = new Date(); today.setHours(0,0,0,0);
+  const start = new Date(T.start + "T00:00:00");
+  const diff = Math.round((start - today) / 86400000);
+  let tripIdx = -1;
+  if (diff > 0) $("#dday").textContent = "D-" + diff;
+  else if (-diff < T.days.length) { tripIdx = -diff; $("#dday").textContent = "여행 " + (tripIdx + 1) + "일차"; }
+  else $("#dday").textContent = "다녀왔어요";
+
+  // tabs
+  document.querySelectorAll("nav.tabs button").forEach(b => b.addEventListener("click", () => {
+    document.querySelectorAll("nav.tabs button").forEach(x => x.setAttribute("aria-selected", x === b));
+    document.querySelectorAll("main section").forEach(s => s.hidden = s.id !== b.dataset.tab);
+    try{ sessionStorage.setItem("tab", b.dataset.tab); }catch(e){}
+    window.scrollTo({top: 0});
+  }));
+
+  // days
+  const daysEl = $("#days");
+  T.days.forEach((d, i) => {
+    const b = document.createElement("button");
+    b.className = "chip";
+    b.innerHTML = "<b>" + esc(d.label) + "</b><span>" + esc(d.date) + " " + esc(d.dow) + "</span>";
+    b.addEventListener("click", () => showDay(i));
+    daysEl.appendChild(b);
+  });
+
+  function showDay(i){
+    [...daysEl.children].forEach((c, j) => c.setAttribute("aria-pressed", i === j));
+    daysEl.children[i].scrollIntoView({block: "nearest", inline: "center"});
+    const d = T.days[i];
+    let h = '<div class="dayhead"><h2>' + esc(d.label) + " · " + esc(d.area) + "</h2><div class='tags'>";
+    h += '<span class="tag">' + esc(d.date) + " (" + esc(d.dow) + ")</span>";
+    if (d.pass) h += '<span class="tag">' + esc(d.pass) + "</span>";
+    if (d.stay) h += '<span class="tag stay">🛏 ' + esc(d.stay) + "</span>";
+    h += '</div></div><ol class="tl">';
+    d.items.forEach(it => {
+      h += '<li class="ev' + (it.time ? " timed" : "") + '"><div class="card">';
+      if (it.time) h += '<div class="time">' + esc(it.time) + "</div>";
+      h += '<div class="ttl">' + esc(it.title) + (it.todo ? '<span class="badge">미정</span>' : "") + "</div>";
+      if (it.note) h += '<p class="note">' + esc(it.note) + "</p>";
+      if (it.info) h += '<p class="info">' + esc(it.info) + "</p>";
+      if (it.map) h += mapLinks(it.map);
+      h += "</div></li>";
+    });
+    h += "</ol>";
+    $("#day").innerHTML = h;
+    try{ sessionStorage.setItem("day", i); }catch(e){}
+  }
+
+  // stays & passes
+  $("#stays").innerHTML = T.stays.map(s =>
+    '<div class="card stay"><h4>' + esc(s.name) + "</h4>" +
+    (s.jp ? '<div class="small">' + esc(s.jp) + "</div>" : "") +
+    '<div style="margin-top:6px;font-size:14px">' + esc(s.nights) + " · " + esc(s.checkin) + "</div>" +
+    '<div class="small">' + esc(s.address) + "</div>" +
+    '<a class="maplink" target="_blank" rel="noopener" href="' + mapUrl(s.map) + '">📍 지도</a></div>'
+  ).join("");
+  $("#passes").innerHTML = T.passes.map(p =>
+    '<div class="card pass"><h4>' + esc(p.name) + '</h4><div class="small">' + esc(p.when) + "</div>" +
+    '<div class="price">' + esc(p.price) + "</div><ul>" + p.points.map(x => "<li>" + esc(x) + "</li>").join("") + "</ul></div>"
+  ).join("");
+
+  // checklists
+  function checklist(key, ul, items, progEl){
+    const st = store.get(key);
+    ul.innerHTML = items.map(t =>
+      '<li><label><input type="checkbox" data-k="' + esc(t) + '"' + (st[t] ? " checked" : "") + "><span>" + esc(t) + "</span></label></li>"
+    ).join("");
+    ul.addEventListener("change", e => {
+      const s = store.get(key); s[e.target.dataset.k] = e.target.checked; store.set(key, s); progress();
+    });
+  }
+  function progress(){
+    const count = sel => { const all = document.querySelectorAll(sel + " input"); return [...all].filter(x => x.checked).length + " / " + all.length; };
+    $("#todoProg").textContent = "완료 " + count("#todos");
+    $("#packProg").textContent = "챙김 " + count("#packing");
+  }
+  checklist("kansap-todos", $("#todos"), T.todos);
+  const packEl = $("#packing");
+  T.packing.forEach(g => {
+    const wrap = document.createElement("div");
+    wrap.innerHTML = '<div class="grp">' + esc(g.group) + '</div><ul class="checks"></ul>';
+    packEl.appendChild(wrap);
+    checklist("kansap-pack", wrap.querySelector("ul"), g.items);
+  });
+  progress();
+  $("#reset").addEventListener("click", () => {
+    store.set("kansap-pack", {});
+    packEl.querySelectorAll("input").forEach(x => x.checked = false);
+    progress();
+  });
+
+  // weather
+  (function(){
+    const W = T.weather, DOW = ["일","월","화","수","목","금","토"];
+    const codes = c => c === 0 ? ["☀️","맑음"] : c <= 2 ? ["🌤️","대체로 맑음"] : c === 3 ? ["☁️","흐림"] :
+      c <= 48 ? ["🌫️","안개"] : c <= 57 ? ["🌦️","이슬비"] : c <= 67 ? ["🌧️","비"] : c <= 77 ? ["🌨️","눈"] :
+      c <= 82 ? ["🌦️","소나기"] : c <= 86 ? ["🌨️","눈"] : ["⛈️","뇌우"];
+    $("#wxTip").textContent = "👕 " + W.tip;
+    $("#wxNorm").innerHTML = Object.values(W.places).map(p =>
+      '<div class="card"><div class="small">' + esc(p.name) + ' (' + esc(p.normal.station) + ')</div>' +
+      '<div class="big"><span style="color:var(--sun)">' + p.normal.hi + '°</span> / <span style="color:var(--sea-2)">' + p.normal.lo + '°</span></div>' +
+      '<div class="small">월 강수량 ' + p.normal.rain + 'mm</div></div>').join("");
+    const fc = {};
+    function render(){
+      let any = false;
+      $("#wxDays").innerHTML = W.days.map((d, i) => {
+        const p = W.places[d.place], dt = new Date(d.date + "T00:00:00"), f = (fc[d.place] || {})[d.date];
+        const head = '<b>' + (i + 1) + '일차 · ' + (dt.getMonth() + 1) + '/' + dt.getDate() + ' (' + DOW[dt.getDay()] + ')</b>';
+        if (f) {
+          any = true;
+          const [ic, tx] = codes(f.code);
+          return '<div class="card wxday"><div class="wxicon">' + ic + '</div><div class="wxmain">' + head +
+            '<div class="wxsub">' + esc(p.name) + ' · ' + tx + ' · 강수 ' + (f.pop ?? "-") + '% · 바람 ' + f.wind + 'm/s</div></div>' +
+            '<div class="wxtemp"><span class="hi">' + Math.round(f.hi) + '°</span><span class="lo">' + Math.round(f.lo) + '°</span></div></div>';
+        }
+        return '<div class="card wxday"><div class="wxicon">🗓️</div><div class="wxmain">' + head +
+          '<div class="wxsub">' + esc(p.name) + ' · 예보 전 (평년 기준)</div></div>' +
+          '<div class="wxtemp"><span class="hi">' + Math.round(p.normal.hi) + '°</span><span class="lo">' + Math.round(p.normal.lo) + '°</span></div></div>';
+      }).join("");
+      $("#wxStatus").textContent = any
+        ? "일기예보 기준이에요. 열 때마다 새로 받아와요."
+        : "예보는 보통 16일 전부터 나와요. 그 전에는 12월 평년 기온을 보여드려요.";
+    }
+    render();
+    const first = W.days[0].date, last = W.days[W.days.length - 1].date;
+    Object.entries(W.places).forEach(([key, p]) => {
+      const url = "https://api.open-meteo.com/v1/forecast?latitude=" + p.lat + "&longitude=" + p.lon +
+        "&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max" +
+        "&timezone=Asia%2FTokyo&start_date=" + first + "&end_date=" + last;
+      fetch(url).then(r => r.ok ? r.json() : null).then(j => {
+        if (!j || !j.daily) return;
+        const D = j.daily, out = {};
+        D.time.forEach((t, i) => {
+          if (D.temperature_2m_max[i] == null) return;
+          out[t] = { code: D.weather_code[i], hi: D.temperature_2m_max[i], lo: D.temperature_2m_min[i],
+            pop: D.precipitation_probability_max[i], wind: Math.round(D.wind_speed_10m_max[i] / 3.6) };
+        });
+        fc[key] = out; render();
+      }).catch(() => {});
+    });
+  })();
+
+  // pass calc
+  (function(){
+    const P = T.passCalc; if (!P) return;
+    const yen = n => n.toLocaleString("ko-KR") + "엔";
+    $("#passCalc").innerHTML = P.items.map(it => {
+      let total = 0, rows = "";
+      it.groups.forEach(g => {
+        let sub = 0;
+        if (it.groups.length > 1 || g.label) rows += '<tr class="grp"><td colspan="2">' + esc(g.label) + '</td></tr>';
+        g.rows.forEach(r => { sub += r[1]; rows += '<tr><td>' + esc(r[0]) + '</td><td class="n">' + yen(r[1]) + '</td></tr>'; });
+        if (it.groups.length > 1) rows += '<tr><td class="small">소계</td><td class="n small">' + yen(sub) + '</td></tr>';
+        total += sub;
+      });
+      const save = total - it.price;
+      rows += '<tr class="sum"><td>그냥 낼 때 합계</td><td class="n">' + yen(total) + '</td></tr>';
+      rows += '<tr class="pass"><td>' + esc(it.name) + '</td><td class="n">' + yen(it.price) + '</td></tr>';
+      const verdict = save > 0
+        ? '패스가 1명당 <b>' + yen(save) + '</b> 싸요 · 어른 ' + P.adults + '명이면 <b>' + yen(save * P.adults) + '</b> 아껴요'
+        : '따로 사는 게 1명당 <b>' + yen(-save) + '</b> 싸요 · 어른 ' + P.adults + '명이면 <b>' + yen(-save * P.adults) + '</b> 아껴요';
+      return '<div class="card calc"><h4 style="margin:0;font-size:16px">' + esc(it.name) + '</h4><div class="small">' + esc(it.when) + '</div>' +
+        '<table>' + rows + '</table><div class="save">' + verdict + '</div>' +
+        '<ul>' + it.notes.map(n => '<li>' + esc(n) + '</li>').join("") + '</ul></div>';
+    }).join("");
+  })();
+
+  $("#sources").innerHTML = T.sources.map(s => '<li><a target="_blank" rel="noopener" href="' + esc(s[1]) + '">' + esc(s[0]) + "</a></li>").join("");
+
+  // restore
+  let startDay = tripIdx >= 0 ? tripIdx : 0;
+  try{ const sd = sessionStorage.getItem("day"); if (sd !== null && tripIdx < 0) startDay = +sd; }catch(e){}
+  showDay(Math.min(startDay, T.days.length - 1));
+  try{ const t = sessionStorage.getItem("tab"); if (t) document.querySelector('nav.tabs button[data-tab="' + t + '"]').click(); }catch(e){}
+})();
+</script>
+</body>
+</html>
