@@ -88,6 +88,15 @@ ol.tl::before{content:"";position:absolute;left:7px;top:10px;bottom:10px;width:2
 .maps .maplink{margin-top:0}
 .maplink{display:inline-flex;align-items:center;gap:4px;margin-top:8px;font-size:13px;font-weight:700;color:var(--sea);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:3px 10px}
 
+/* transit */
+.ev.mv{margin:-4px 0 8px}
+.ev.mv::before{width:6px;height:6px;left:3px;top:13px;border:0;background:var(--line)}
+.mvrow{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;font-size:13px;color:var(--muted);padding:6px 2px}
+.mvrow b{color:var(--ink);font-weight:700}
+.mvrow .fare{color:var(--sea-2);font-weight:700}
+.mvrow .route{flex-basis:100%;font-size:12.5px}
+.card .mvrow{margin-top:8px;padding:6px 10px;border:1px dashed var(--line);border-radius:10px}
+.daytotal{margin:4px 0 0 28px;font-size:13.5px;background:var(--sun-soft);border-radius:10px;padding:8px 12px}
 /* options */
 .opts{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px}
 .opt{font:inherit;font-size:13.5px;font-weight:700;text-align:left;padding:8px 10px;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer;line-height:1.35}
@@ -287,17 +296,29 @@ footer a{color:var(--muted)}
     if (d.pass) h += '<span class="tag">' + esc(d.pass) + "</span>";
     if (d.stay) h += '<span class="tag stay">🛏 ' + esc(d.stay) + "</span>";
     h += '</div></div><ol class="tl">';
+    let fareSum = 0, fareUnknown = false;
+    const yenTxt = n => n.toLocaleString("ko-KR") + "엔";
+    function mvHtml(it){
+      if (typeof it.fare === "number") fareSum += it.fare; else fareUnknown = true;
+      const fare = typeof it.fare === "number" ? "어른 " + yenTxt(it.fare) : (it.fareText || "요금 확인 필요");
+      return '<div class="mvrow"><b>' + esc(it.go) + "</b>" + (it.min ? "<span>" + esc(it.min) + "</span>" : "") +
+        '<span class="fare">' + esc(fare) + "</span>" + (it.route ? '<span class="route">' + esc(it.route) + "</span>" : "") + "</div>";
+    }
     d.items.forEach((it, k) => {
+      if (it.go && !it.title) { h += '<li class="ev mv">' + mvHtml(it) + "</li>"; return; }
       h += '<li class="ev' + (it.time ? " timed" : "") + '"><div class="card">';
       if (it.time) h += '<div class="time">' + esc(it.time) + "</div>";
       h += '<div class="ttl">' + esc(it.title) + (it.todo ? '<span class="badge">미정</span>' : "") + "</div>";
       if (it.note) h += '<p class="note">' + esc(it.note) + "</p>";
       if (it.info) h += '<p class="info">' + esc(it.info) + "</p>";
+      if (it.go) h += mvHtml(it);
       if (it.map) h += mapLinks(it.map);
       if (it.options) h += optionsHtml(it.options, i + "-" + k);
       h += "</div></li>";
     });
     h += "</ol>";
+    if (fareSum || fareUnknown) h += '<div class="daytotal">🚃 이날 교통비 · 어른 1명 <b>' + yenTxt(fareSum) + "</b> (2명 " + yenTxt(fareSum * 2) + ")" +
+      (d.fareNote ? "<br><span class=\"small\">" + esc(d.fareNote) + "</span>" : "") + "</div>";
     $("#day").innerHTML = h;
     $("#day").querySelectorAll(".optwrap").forEach(w => {
       const key = "kansap-opt-" + w.dataset.key;
