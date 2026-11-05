@@ -13,7 +13,7 @@
 */
 
 window.TRIP = {
-  title: "Kan 패밀리 삿포로",
+  title: "우주네 삿포로 여행",
   dates: "2026.12.7 (월) – 12.11 (금)",
   start: "2026-12-07",
   weather: {
