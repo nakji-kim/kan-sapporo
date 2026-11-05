@@ -271,7 +271,7 @@ footer a{color:var(--muted)}
   function optionsHtml(opts, key){
     let sel = 0;
     try{ const v = localStorage.getItem("kansap-opt-" + key); if (v !== null && opts[+v]) sel = +v; }catch(e){}
-    let h = '<div class="optwrap" data-key="' + key + '"><div class="opts">';
+    let h = '<div class="optwrap" data-key="' + key + '"><div class="opts" style="grid-template-columns:repeat(' + opts.length + ',minmax(0,1fr))">';
     opts.forEach((o, n) => {
       h += '<button class="opt" data-n="' + n + '" aria-pressed="' + (n === sel) + '">' + esc(o.name) +
         (o.sub ? "<small>" + esc(o.sub) + "</small>" : "") + "</button>";
