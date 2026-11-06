@@ -5,30 +5,34 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>우주네 삿포로 여행</title>
 <meta name="description" content="2026.12.7–11 삿포로·오타루 가족여행 일정">
-<meta name="theme-color" content="#1f4e5f">
+<meta name="theme-color" content="#8fbfe6">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@700&family=Dongle:wght@700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#f6f1e9; --card:#fffdf9; --ink:#22303a; --muted:#6b7680; --line:#e6ddcf;
-  --sea:#1f4e5f; --sea-2:#2f7184; --sun:#e0763c; --sun-soft:#fbe6d8;
-  --info:#eef5f6; --info-ink:#245565; --todo:#c2410c; --todo-bg:#fff1e6;
-  --shadow:0 1px 2px rgba(34,48,58,.06),0 4px 14px rgba(34,48,58,.06);
+  --bg:#f5f8fb; --card:#ffffff; --ink:#22303d; --muted:#6b7886; --line:#dfe7ef;
+  --sea:#2a5d8a; --sea-2:#4a86b8; --sun:#e06a6a; --sun-soft:#fbe4e4;
+  --info:#eaf2f9; --info-ink:#2a5577; --todo:#c2410c; --todo-bg:#fff1e6;
+  --shadow:0 1px 2px rgba(34,48,61,.05),0 4px 14px rgba(34,48,61,.06);
+  --sky:linear-gradient(180deg,#8fbfe6 0%,#bcdaf1 60%,#e3f0fa 100%); --sky-ink:#163250;
+  --mtn-far:%23d7e8f5; --mtn-near:%23ffffff;
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
-    --bg:#12181c; --card:#1b2328; --ink:#e8ecef; --muted:#9aa6ae; --line:#2c373e;
-    --sea:#8cc7d6; --sea-2:#6fb3c4; --sun:#f0935f; --sun-soft:#3a2a20;
-    --info:#1d2f35; --info-ink:#a9d6e1; --todo:#f5a06b; --todo-bg:#3a271b;
+    --bg:#10161d; --card:#19222c; --ink:#e6edf3; --muted:#97a5b3; --line:#2a3542;
+    --sea:#9cc8ea; --sea-2:#6fa6d6; --sun:#f08c8c; --sun-soft:#3a2326;
+    --info:#1b2a38; --info-ink:#a9cdeb; --todo:#f5a06b; --todo-bg:#3a271b;
     --shadow:none;
+    --sky:linear-gradient(180deg,#0e1a2c 0%,#1a3150 65%,#2a4a70 100%); --sky-ink:#e6edf3;
   }
 }
 :root[data-theme="dark"]{
-  --bg:#12181c; --card:#1b2328; --ink:#e8ecef; --muted:#9aa6ae; --line:#2c373e;
-  --sea:#8cc7d6; --sea-2:#6fb3c4; --sun:#f0935f; --sun-soft:#3a2a20;
-  --info:#1d2f35; --info-ink:#a9d6e1; --todo:#f5a06b; --todo-bg:#3a271b;
-  --shadow:none;
+  --bg:#10161d; --card:#19222c; --ink:#e6edf3; --muted:#97a5b3; --line:#2a3542;
+    --sea:#9cc8ea; --sea-2:#6fa6d6; --sun:#f08c8c; --sun-soft:#3a2326;
+    --info:#1b2a38; --info-ink:#a9cdeb; --todo:#f5a06b; --todo-bg:#3a271b;
+    --shadow:none;
+    --sky:linear-gradient(180deg,#0e1a2c 0%,#1a3150 65%,#2a4a70 100%); --sky-ink:#e6edf3;
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
@@ -37,15 +41,17 @@ a{color:inherit}
 .wrap{max-width:640px;margin:0 auto;padding:0 16px}
 
 /* header */
-header{background:linear-gradient(160deg,#1f4e5f 0%,#2f7184 70%,#3d8796 100%);color:#fff;padding:28px 0 22px;position:relative;overflow:hidden}
-header::after{content:"";position:absolute;right:-40px;top:-40px;width:180px;height:180px;border-radius:50%;background:#e0763c;opacity:.9}
-header::before{content:"";position:absolute;left:0;right:0;bottom:0;height:26px;background:
-  radial-gradient(28px 12px at 28px 26px,var(--bg) 98%,transparent) repeat-x;background-size:56px 26px}
+header{background:var(--sky);color:var(--sky-ink);padding:28px 0 84px;position:relative;overflow:hidden}
+header::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:78px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 74' preserveAspectRatio='none'%3E%3Cpath d='M0 74 L0 50 L40 30 L70 42 L120 8 L160 34 L200 22 L250 46 L300 14 L350 40 L400 28 L400 74Z' fill='%23d7e8f5'/%3E%3Cpath d='M120 8 L108 16 L116 18 L124 14 L132 19 L141 21Z M300 14 L289 22 L298 22 L306 19 L315 24Z' fill='%23ffffff' fill-opacity='.9'/%3E%3Cpath d='M0 74 L0 60 L60 44 L110 56 L170 30 L230 58 L280 40 L340 60 L400 48 L400 74Z' fill='%23f5f8fb'/%3E%3C/svg%3E") bottom/100% 100% no-repeat}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) header::after{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 74' preserveAspectRatio='none'%3E%3Cpath d='M0 74 L0 50 L40 30 L70 42 L120 8 L160 34 L200 22 L250 46 L300 14 L350 40 L400 28 L400 74Z' fill='%23324d6e'/%3E%3Cpath d='M120 8 L108 16 L116 18 L124 14 L132 19 L141 21Z M300 14 L289 22 L298 22 L306 19 L315 24Z' fill='%23ffffff' fill-opacity='.9'/%3E%3Cpath d='M0 74 L0 60 L60 44 L110 56 L170 30 L230 58 L280 40 L340 60 L400 48 L400 74Z' fill='%2310161d'/%3E%3C/svg%3E")}}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .dday{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.25)}}
+:root[data-theme="dark"] .dday{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.25)}
+:root[data-theme="dark"] header::after{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 74' preserveAspectRatio='none'%3E%3Cpath d='M0 74 L0 50 L40 30 L70 42 L120 8 L160 34 L200 22 L250 46 L300 14 L350 40 L400 28 L400 74Z' fill='%23324d6e'/%3E%3Cpath d='M120 8 L108 16 L116 18 L124 14 L132 19 L141 21Z M300 14 L289 22 L298 22 L306 19 L315 24Z' fill='%23ffffff' fill-opacity='.9'/%3E%3Cpath d='M0 74 L0 60 L60 44 L110 56 L170 30 L230 58 L280 40 L340 60 L400 48 L400 74Z' fill='%2310161d'/%3E%3C/svg%3E")}
 header .wrap{position:relative;z-index:1}
 .eyebrow{font-size:12px;letter-spacing:.12em;opacity:.85;margin:0}
 h1{font-family:"Dongle","Gowun Batang",sans-serif;font-size:42px;line-height:1.05;margin:6px 0 10px;word-break:keep-all}
 .meta{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13.5px;opacity:.95;margin-bottom:18px}
-.dday{display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:3px 12px;font-size:13px;font-weight:700}
+.dday{display:inline-block;background:rgba(255,255,255,.55);border:1px solid rgba(42,93,138,.25);border-radius:999px;padding:3px 12px;font-size:13px;font-weight:700}
 
 /* tabs */
 nav.tabs{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px solid var(--line)}
