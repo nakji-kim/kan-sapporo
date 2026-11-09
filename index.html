@@ -105,6 +105,26 @@ ol.tl::before{content:"";position:absolute;left:7px;top:10px;bottom:10px;width:2
 .card .mvrow + .mvrow{margin-top:6px}
 .card .mvrow{margin-top:8px;padding:6px 10px;border:1px dashed var(--line);border-radius:10px}
 .daytotal{margin:4px 0 0 28px;font-size:13.5px;background:var(--sun-soft);border-radius:10px;padding:8px 12px}
+/* route map */
+.routebox{margin:18px 0 0;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
+.routebox h3{margin:0;padding:12px 14px 4px;font-size:15px}
+.routebox .rnote{margin:0;padding:0 14px 8px;font-size:12.5px;color:var(--muted)}
+.rlist{margin:0;padding:10px 14px 4px;list-style:none;font-size:13.5px}
+.rlist li{display:flex;gap:8px;align-items:baseline;padding:2px 0}
+.rnum{flex:none;display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--sea);color:#fff;font-size:11px;font-weight:700}
+.rnum.home{background:var(--sun)}
+.rbtn{display:block;width:calc(100% - 28px);margin:6px 14px 14px;text-align:center;padding:10px;border-radius:10px;border:1px solid var(--sea-2);background:var(--info);color:var(--info-ink);font:inherit;font-weight:700;font-size:14.5px;text-decoration:none;cursor:pointer}
+.rmodal{position:fixed;inset:0;z-index:2000;background:rgba(15,25,40,.55);display:flex;align-items:flex-end;justify-content:center}
+.rmodal[hidden]{display:none}
+.rmpanel{background:var(--card);width:100%;max-width:640px;max-height:94vh;border-radius:16px 16px 0 0;display:flex;flex-direction:column;overflow:auto}
+.rmhead{display:flex;align-items:center;justify-content:space-between;padding:12px 14px 8px}
+.rmhead h3{margin:0;font-size:16px}
+.rmclose{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:var(--bg);font-size:16px;cursor:pointer;color:var(--ink)}
+.rmmap{height:58vh;min-height:280px;flex:none;background:var(--info)}
+.rmodal .rnote{padding:8px 14px 0}
+@media (min-width:700px){.rmodal{align-items:center}.rmpanel{border-radius:16px}}
+.rpin{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#2a5d8a;color:#fff;font:700 12px/1 system-ui,sans-serif;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.35)}
+.rpin.home{background:#e06a6a;font-size:13px}
 /* options */
 .opts{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px}
 .opt{font:inherit;font-size:13.5px;font-weight:700;text-align:left;padding:8px 10px;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer;line-height:1.35}
@@ -163,6 +183,8 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;font-size:12.5px;col
 footer ul{padding-left:18px;margin:6px 0}
 footer a{color:var(--muted)}
 </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 </head>
 <body>
 <header>
@@ -226,6 +248,15 @@ footer a{color:var(--muted)}
   </div>
 </footer>
 
+<div class="rmodal" id="routeModal" hidden>
+  <div class="rmpanel" role="dialog" aria-modal="true" aria-label="동선 지도">
+    <div class="rmhead"><h3>🗺 동선</h3><button class="rmclose" type="button" aria-label="닫기">✕</button></div>
+    <div class="rmmap"></div>
+    <p class="rnote">숙소에서 출발해 숙소로 돌아오는 순서예요. 선은 순서를 이은 직선이라 실제 길과 달라요. 지도는 두 손가락으로 확대할 수 있어요.</p>
+    <div class="rmlist"></div>
+    <a class="rbtn rmg" href="#" target="_blank" rel="noopener">구글 지도에서 길 찾기</a>
+  </div>
+</div>
 <script src="data.js"></script>
 <script>
 (function(){
@@ -295,6 +326,63 @@ footer a{color:var(--muted)}
     return h + "</div>";
   }
 
+  let routeMap = null, routePts = null, routeTitle = "";
+  function selectedOpt(d, i){
+    let r = null;
+    d.items.forEach((it, k) => {
+      if (!it.options) return;
+      let sel = 0;
+      try{ const v = localStorage.getItem("kansap-opt-" + i + "-" + k); if (v !== null && it.options[+v]) sel = +v; }catch(e){}
+      r = it.options[sel];
+    });
+    return r;
+  }
+  const pinLabel = pts => { let n = 0; return pts.map(p => p.home ? "숙" : String(++n)); };
+  function routeList(pts){
+    const lab = pinLabel(pts);
+    return '<ol class="rlist">' + pts.map((p, j) => '<li><span class="rnum' + (p.home ? " home" : "") + '">' + lab[j] + "</span>" + esc(p.n) + "</li>").join("") + "</ol>";
+  }
+  function gmapUrl(pts){
+    const ll = pts.map(p => p.ll.join(","));
+    return "https://www.google.com/maps/dir/?api=1&origin=" + ll[0] + "&destination=" + ll[ll.length - 1] +
+      (ll.length > 2 ? "&waypoints=" + encodeURIComponent(ll.slice(1, -1).slice(0, 9).join("|")) : "");
+  }
+  function drawRoute(d, i){
+    const box = document.getElementById("routebox"); if (!box) return;
+    const opt = selectedOpt(d, i);
+    const pts = (opt && opt.route) || d.route;
+    if (!pts || !pts.length) { box.remove(); return; }
+    routePts = pts; routeTitle = d.label + " 동선" + (opt && opt.route ? " · " + opt.name : "");
+    box.innerHTML = "<h3>🗺 오늘의 동선" + (opt && opt.route ? " · " + esc(opt.name) : "") + "</h3>" +
+      (d.routeNote ? '<p class="rnote">' + esc(d.routeNote) + "</p>" : "") + routeList(pts) +
+      '<button class="rbtn" type="button" id="routeOpen">지도로 동선 보기</button>';
+    document.getElementById("routeOpen").onclick = openRoute;
+  }
+  function openRoute(){
+    const m = document.getElementById("routeModal");
+    m.querySelector("h3").textContent = "🗺 " + routeTitle;
+    m.querySelector(".rmlist").innerHTML = routeList(routePts);
+    m.querySelector(".rmg").href = gmapUrl(routePts);
+    m.hidden = false; document.body.style.overflow = "hidden";
+    if (routeMap) { routeMap.remove(); routeMap = null; }
+    if (typeof L === "undefined") { m.querySelector(".rmmap").textContent = "지도를 불러오지 못했어요. 아래 구글 지도 버튼을 눌러 주세요."; return; }
+    routeMap = L.map(m.querySelector(".rmmap"), { scrollWheelZoom: true, tap: false });
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 18, attribution: "© OpenStreetMap" }).addTo(routeMap);
+    const line = routePts.map(p => p.ll), lab = pinLabel(routePts), seen = {};
+    L.polyline(line, { color: "#2a5d8a", weight: 3, opacity: .8, dashArray: "6 6" }).addTo(routeMap);
+    routePts.forEach((p, j) => {
+      const k = p.ll.join(","); if (p.home && seen[k]) return; seen[k] = 1;
+      L.marker(p.ll, { icon: L.divIcon({ className: "", html: '<div class="rpin' + (p.home ? " home" : "") + '">' + lab[j] + "</div>", iconSize: [24, 24], iconAnchor: [12, 12] }) }).bindPopup(esc(p.n)).addTo(routeMap);
+    });
+    setTimeout(() => { routeMap.invalidateSize(); routeMap.fitBounds(L.latLngBounds(line).pad(0.12)); }, 30);
+  }
+  function closeRoute(){
+    document.getElementById("routeModal").hidden = true; document.body.style.overflow = "";
+    if (routeMap) { routeMap.remove(); routeMap = null; }
+  }
+  document.getElementById("routeModal").addEventListener("click", e => { if (e.target.id === "routeModal" || e.target.closest(".rmclose")) closeRoute(); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") closeRoute(); });
+
   function showDay(i){
     [...daysEl.children].forEach((c, j) => c.setAttribute("aria-pressed", i === j));
     daysEl.children[i].scrollIntoView({block: "nearest", inline: "center"});
@@ -329,7 +417,9 @@ footer a{color:var(--muted)}
     h += "</ol>";
     if (fareSum || fareUnknown) h += '<div class="daytotal">🚃 이날 교통비 · 어른 1명 <b>' + yenTxt(fareSum) + "</b> (2명 " + yenTxt(fareSum * 2) + ")" +
       (d.fareNote ? "<br><span class=\"small\">" + esc(d.fareNote) + "</span>" : "") + "</div>";
+    h += '<div class="routebox" id="routebox"></div>';
     $("#day").innerHTML = h;
+    drawRoute(d, i);
     $("#day").querySelectorAll(".optwrap").forEach(w => {
       const key = "kansap-opt-" + w.dataset.key;
       w.addEventListener("click", e => {
@@ -338,6 +428,7 @@ footer a{color:var(--muted)}
         w.querySelectorAll(".opt").forEach((x, j) => x.setAttribute("aria-pressed", j === n));
         w.querySelectorAll(".optbody").forEach((x, j) => x.hidden = j !== n);
         try{ localStorage.setItem(key, n); }catch(err){}
+        drawRoute(d, i);
       });
     });
     try{ sessionStorage.setItem("day", i); }catch(e){}
