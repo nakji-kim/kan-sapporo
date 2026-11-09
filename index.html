@@ -166,6 +166,13 @@ h3.sec:first-child{margin-top:4px}
 .wxtemp .hi{font-weight:700;color:var(--sun);font-size:17px}
 .wxtemp .lo{color:var(--sea-2);font-size:15px;margin-left:4px}
 .wxsub{font-size:12.5px;color:var(--muted)}
+.bbhead{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.bbhead b{font-size:15.5px}
+.bblv{font-size:12.5px;font-weight:700;padding:2px 8px;border-radius:99px;white-space:nowrap}
+.bblv.ok{background:#e3f3e8;color:#23663a}.bblv.mid{background:#fdf1d8;color:#8a5a00}.bblv.hard{background:#fde4e1;color:#a3352a}
+.bbt{font-size:13.5px;color:var(--muted);margin:2px 0 4px}
+ul.bbl{margin:4px 0 0;padding-left:18px;font-size:14px;line-height:1.55}
+ul.bbl li{margin:2px 0}
 .wxtip{margin-top:10px;background:var(--info);color:var(--info-ink);border-color:transparent;font-size:14px}
 .wxnorm{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .wxnorm .card{text-align:center}
@@ -202,6 +209,7 @@ footer a{color:var(--muted)}
     <button role="tab" data-tab="move" aria-selected="false">숙소·교통</button>
     <button role="tab" data-tab="pack" aria-selected="false">준비물</button>
     <button role="tab" data-tab="wx" aria-selected="false">날씨</button>
+    <button role="tab" data-tab="bb" aria-selected="false">유모차</button>
   </div>
 </nav>
 
@@ -237,6 +245,15 @@ footer a{color:var(--muted)}
     <div class="card wxtip" id="wxTip"></div>
     <h3 class="sec">12월 평년 기온</h3>
     <div class="wxnorm" id="wxNorm"></div>
+  </section>
+
+  <section id="bb" class="panel" hidden>
+    <h3 class="sec">유모차로 다니기</h3>
+    <div class="card wxtip" id="bbSum"></div>
+    <h3 class="sec">날짜별 난이도</h3>
+    <div class="stack" id="bbDays"></div>
+    <h3 class="sec">준비하면 좋은 것</h3>
+    <div class="card"><ul class="bbl" id="bbTips"></ul></div>
   </section>
 
 </main>
@@ -476,6 +493,15 @@ footer a{color:var(--muted)}
     packEl.querySelectorAll("input").forEach(x => x.checked = false);
     progress();
   });
+
+  // stroller
+  if (T.stroller) {
+    const S = T.stroller, LV = {ok:"편해요", mid:"조금 힘들어요", hard:"힘들어요"};
+    $("#bbSum").textContent = S.summary;
+    $("#bbDays").innerHTML = S.days.map(x => '<div class="card"><div class="bbhead"><b>' + esc(x.d) + '</b><span class="bblv ' + x.lv + '">' + LV[x.lv] + '</span></div>' +
+      '<p class="bbt">' + esc(x.t) + '</p><ul class="bbl">' + x.items.map(i => '<li>' + esc(i) + '</li>').join("") + '</ul></div>').join("");
+    $("#bbTips").innerHTML = S.tips.map(i => '<li>' + esc(i) + '</li>').join("");
+  }
 
   // weather
   (function(){
