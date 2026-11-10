@@ -280,6 +280,7 @@ footer a{color:var(--muted)}
   const T = window.TRIP;
   const $ = s => document.querySelector(s);
   const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const rich = s => esc(s).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");
   const mapLinks = m => {
     const list = Array.isArray(m) ? m : [["지도", m]];
     return '<div class="maps">' + list.map(x => {
@@ -334,7 +335,7 @@ footer a{color:var(--muted)}
     h += "</div>";
     opts.forEach((o, n) => {
       h += '<div class="optbody"' + (n === sel ? "" : " hidden") + ">";
-      if (o.info) h += '<p class="info">' + esc(o.info) + "</p>";
+      if (o.info) h += '<p class="info">' + rich(o.info) + "</p>";
       if (o.pros) h += '<h5 class="pro">👍 좋은 점</h5><ul>' + o.pros.map(x => "<li>" + esc(x) + "</li>").join("") + "</ul>";
       if (o.cons) h += '<h5 class="con">👀 아쉬운 점</h5><ul>' + o.cons.map(x => "<li>" + esc(x) + "</li>").join("") + "</ul>";
       if (o.map) h += mapLinks(o.map);
@@ -424,7 +425,7 @@ footer a{color:var(--muted)}
       const mvs = it.moves || [], goMv = mvs.filter(m => !m.back), backMv = mvs.filter(m => m.back);
       if (goMv.length) h += '<div class="mvlab">가는 길</div>' + goMv.map(mvHtml).join("");
       if (it.note) h += '<p class="note">' + esc(it.note) + "</p>";
-      if (it.info) h += '<p class="info">' + esc(it.info) + "</p>";
+      if (it.info) h += '<p class="info">' + rich(it.info) + "</p>";
       if (it.go) h += mvHtml(it);
       if (it.map) h += mapLinks(it.map);
       if (backMv.length) h += '<div class="mvlab">돌아가는 길</div>' + backMv.map(mvHtml).join("");
