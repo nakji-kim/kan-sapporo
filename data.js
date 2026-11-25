@@ -152,9 +152,9 @@ window.TRIP = {
         { time: "13:20~", title: "JR 쾌속 에어포트 · 삿포로 → 신치토세공항", note: "늦어도 13:30 전에는 타기",
           go: "🚆 JR", min: "약 37분", fare: 1230, route: "삿포로 → 신치토세공항 · u시트는 1,000엔 추가", map: "札幌駅" },
         { time: "14:00~", title: "국제선 체크인 · 짐 맡기기" },
-        { time: "14:20~", title: "공항 구경", note: "국내선 터미널 3층 도라에몽 와쿠와쿠 스카이파크, 로이스 초콜릿 월드. 국제선과 연결통로로 이어져 있어요",
-          info: "도라에몽 스카이파크 10:00~18:00 (요금은 공식 사이트 확인).",
-          map: [["도라에몽 스카이파크", "ドラえもん わくわくスカイパーク"]] },
+        { time: "14:20~", title: "공항 구경", note: "국내선 터미널 3층 로이스 초콜릿 월드(무료). 국제선과 연결통로로 이어져 있어요",
+          info: "로이스 초콜릿 월드 3층 · 매장·박물관 8:00~19:00, 유리 너머 공장 견학 8:30~17:30(불규칙 휴무), 입장 무료. 빵은 9:00부터 팔아요.",
+          map: [["로이스 초콜릿 월드", "ロイズチョコレートワールド 新千歳空港"]] },
         { time: "15:40~", title: "보안검색 · 출국", note: "출발 1시간 전에는 들어가기" },
         { time: "16:55~20:05", title: "비행 · 신치토세 → 청주" }
       ]
@@ -269,7 +269,6 @@ window.TRIP = {
     ["효세쓰노몬 (핫페퍼)", "https://www.hotpepper.jp/strJ000026729/"],
     ["효세쓰노몬 코스 요금 (핫페퍼)", "https://www.hotpepper.jp/strJ000026729/course/"],
     ["스스키노 가족 식당 (맵플)", "https://www.mapple.net/region/a0102010103_s-situation=family/spot/"],
-    ["도라에몽 스카이파크", "https://travelist.jp/airport_CTS/guide/posts/p297"],
     ["12월 평년 기온 (삿포로)", "https://weather.time-j.net/climate/chart/sapporo"],
     ["일기예보 Open-Meteo", "https://open-meteo.com/"],
     ["마루야마 동물원 편의시설(유모차)", "https://www.city.sapporo.jp/zoo/info/riyo/riben.html"],
